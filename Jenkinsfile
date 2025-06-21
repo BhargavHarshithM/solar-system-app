@@ -164,7 +164,7 @@ pipeline {
                     script {
                     sshagent(['aws-ec2-s3-lamdba-creds']) {
                             sh '''
-                            ssh -o StrictHostKeyChecking=no ubuntu@<Public-IP-Address> "
+                            ssh -o StrictHostKeyChecking=no ubuntu@52.201.213.58"
                             if sudo docker ps -a | grep -q "solar-system"; then
                                 echo 'Container exists, stopping and removing...'
                                 sudo docker stop solar-system && sudo docker rm solar-system
