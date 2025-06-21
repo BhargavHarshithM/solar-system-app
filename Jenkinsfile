@@ -24,7 +24,7 @@ pipeline {
         stage('Git Checkout'){
             steps {
                 sh 'echo Cloning Git Repository'
-                git branch: 'main', url: 'https://github.com/BhargavHarshithMudragiri/solar-system.git'
+                git branch: 'feature/enabling-cicd', url: 'https://github.com/BhargavHarshithM/solar-system-app.git'
             }
         }
         
@@ -158,7 +158,7 @@ pipeline {
 
         stage('Deploy - AWS EC2') {
             when {
-                branch 'main'
+                branch 'feature/*'
             }
                 steps {
                     script {
@@ -183,7 +183,7 @@ pipeline {
         }
 
         stage('Integration tests') {
-            when { branch 'main' }
+            when { branch 'feature/*' }
             steps {
                 sh 'printenv | grep -i branch'
                 withAWS(credentials: 'aws-ec2-s3-lamdba-creds', region: 'us-east-1') {
