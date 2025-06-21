@@ -62,26 +62,19 @@ pipeline {
             }
         }
 
-        stage('Run Unit Tests') {
-            options {
-              retry(2)
-            }
+        stage('Unit Tests') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'mongo-db-creds', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
-                  sh 'npm test'
-                }
+                sh 'echo Running Unit Tests...'
+                sh 'npm test'
             }
-        }
+        } 
 
-        stage('Run Code Coverage') {
+        stage('Code Coverage') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'mongo-db-creds', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
-                  catchError(buildResult: 'SUCCESS', message: 'Oops! This will be fixed in coming release.', stageResult: 'UNSTABLE') {
-                    sh 'npm run coverage'
-                }
-                }
+                sh 'echo Running Code Coverage...'
+                sh 'npm run coverage'
             }
-        }
+        }   
     }
 }
 
@@ -92,7 +85,6 @@ POST {
 
 
         publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'dependency-check-jenkins.html', reportName: 'Dependency Check HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-
         publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: 'coverage/lcov-report', reportFiles: 'index.html', reportName: 'Code Coverage HTML Report', reportTitles: '', useWrapperFileDirectly: true])
     }
 }
